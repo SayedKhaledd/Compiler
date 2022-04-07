@@ -1,14 +1,13 @@
 grammar switchh;
 start:stat*;
-stat: assignment| if_stat| for_stat|while_stat|command|incrementt|switchhy|assignmentt ;
-switchhy:SWITCH OPAR expr CPAR OBRACE (case_statement+ default_stat?) CBRACE;
-case_statement:CASE val ':' (assignmentt|assignment|incrementt|(expr SCOL))*  command?;
-default_stat:DEFAULT  ':' (assignmentt|assignment|incrementt|(expr SCOL))*  command?;
+stat: assignment| if_stat| for_stat|while_stat|command|incrementt|switchhy ;
+switchhy:SWITCH OPAR ID CPAR OBRACE (case_statement+ default_stat?) CBRACE;
+case_statement:CASE val ':' ((assignment|incrementt|expr)*  |command?);
+default_stat:DEFAULT  ':' (assignment|incrementt|expr)*;
 incrementt: (ID '++' |ID '--' |'++'ID |'--'ID  )SCOL;
 while_stat: WHILE condition_block ;
 for_stat: FOR exprfor stat_block;
 assignment: DType ID ASSIGN expr (COMMA ID ASSIGN expr)* SCOL;
-assignmentt:ID ASSIGN expr (COMMA ID ASSIGN expr)* SCOL;
 if_stat: IF condition_block (ELSE IF condition_block)* (ELSE stat_block)?;
 condition_block: (expr stat_block);
 block: stat*|(ident SCOL);

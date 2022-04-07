@@ -1,23 +1,17 @@
-grammar switchh;
-start:stat*;
-stat: assignment| if_stat| for_stat|while_stat|command|incrementt|switchhy|assignmentt ;
-switchhy:SWITCH OPAR expr CPAR OBRACE (case_statement+ default_stat?) CBRACE;
-case_statement:CASE val ':' (assignmentt|assignment|incrementt|(expr SCOL))*  command?;
-default_stat:DEFAULT  ':' (assignmentt|assignment|incrementt|(expr SCOL))*  command?;
-incrementt: (ID '++' |ID '--' |'++'ID |'--'ID  )SCOL;
-while_stat: WHILE condition_block ;
+grammar Loop;
+
+stat: assignment| if_stat| for_stat ;
 for_stat: FOR exprfor stat_block;
-assignment: DType ID ASSIGN expr (COMMA ID ASSIGN expr)* SCOL;
-assignmentt:ID ASSIGN expr (COMMA ID ASSIGN expr)* SCOL;
+assignment: DType ID ASSIGN expr SCOL;  //p=lllll|pp
 if_stat: IF condition_block (ELSE IF condition_block)* (ELSE stat_block)?;
 condition_block: (expr stat_block);
 block: stat*|(ident SCOL);
 stat_block: OBRACE block CBRACE | stat;
-exprfor: OPAR(((ident (COMMA assign_value)*)? SCOL cond* SCOL (chang(COMMA chang)*)?) | TRUE)CPAR;
+exprfor: OPAR(((ident (Coma assign_value)*)? SCOL cond* SCOL (chang(Coma chang)*)?) | TRUE)CPAR;
 ident: (DType assign_value );
 assign_value:ID ASSIGN (val);
 val:INT|FLOAT|STRING;
-command:(BREAK|CONTINUE) SCOL;
+Coma:',';
 cond: expr ;
 chang: (ID PLUS PLUS)|(ID MINUS MINUS)|(PLUS PLUS ID)|(MINUS MINUS ID);
 expr
@@ -58,14 +52,14 @@ DIV : '/';
 MOD : '%';
 POW : '^';
 NOT : '!';
-WHILE:'while';
+
 SCOL : ';';
 ASSIGN : '=';
 OPAR : '(';
 CPAR : ')';
 OBRACE : '{';
 CBRACE : '}';
-BREAK:'break';
+
 TRUE : 'true';
 FALSE : 'false';
 NIL : 'nil';
@@ -73,11 +67,7 @@ IF : 'if';
 ELSE : 'else';
 FOR : 'for';
 LOG : 'log';
-SWITCH:'switch';
-CASE: 'case';
-COMMA:',';
-CONTINUE:'continue';
-DEFAULT:'default';
+
 ID: ('a'..'z'|'A'..'Z')('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
 
 INT: [0-9]+;
@@ -91,3 +81,23 @@ COMMENT: '#' ~[\r\n]* -> skip;
 SPACE: [ \t\r\n] -> skip;
 
 OTHER: .;
+
+//options
+//    {
+//         language = Java;
+//    }
+//Whitespaces : [ \t\r\n]+ -> skip ;
+//
+//start: Type? exp Eol;
+//Type:'int' | 'double';
+//Id: ('a'..'z' | 'A'..'Z')('a'..'z' | 'A'..'Z' | '0'..'9'| '_')*;
+//Assignment: '=';
+//Numbers: ('0'..'9')+;
+//Value: '-'? (Numbers| (Numbers('.')Numbers));
+//Eol: ';';
+//exp: Id ((Assignment (Value | Id)))?;
+//// SPACES AND TAPS
+//WS : [ \t]+ -> skip ;
+//// IF CONDITIONS
+//ifcon: 'if' '(' Cond ')' '{' exp '}';
+//Cond: (Id|Numbers)  WS Assignment Assignment WS (Id|Numbers);
