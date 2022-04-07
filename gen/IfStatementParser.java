@@ -18,7 +18,7 @@ public class IfStatementParser extends Parser {
 	public static final int
 		OR=1, AND=2, EQ=3, NEQ=4, GL=5, LT=6, GTEQ=7, LTEQ=8, PLUS=9, MINUS=10, 
 		MULT=11, DIV=12, MOD=13, POW=14, NOT=15, SCOL=16, ASSIGN=17, OPAR=18, 
-		CPAR=19, OBRACE=20, CBRACE=21, TRUE=22, FALSE=23, NIL=24, IF=25, ELSE=26, 
+		CPAR=19, OBRACE=20, CBRACE=21, TRUE=22, FALSE=23, NULL=24, IF=25, ELSE=26, 
 		WHILE=27, TYPE=28, ID=29, INT=30, FLOAT=31, STRING=32, COMMENT=33, SPACE=34, 
 		OTHER=35;
 	public static final int
@@ -37,7 +37,7 @@ public class IfStatementParser extends Parser {
 		return new String[] {
 			null, "'||'", "'&&'", "'=='", "'!='", "'>'", "'<'", "'>='", "'<='", "'+'", 
 			"'-'", "'*'", "'/'", "'%'", "'^'", "'!'", "';'", "'='", "'('", "')'", 
-			"'{'", "'}'", "'true'", "'false'", "'nil'", "'if'", "'else'", "'while'"
+			"'{'", "'}'", "'true'", "'false'", "'null'", "'if'", "'else'", "'while'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -45,7 +45,7 @@ public class IfStatementParser extends Parser {
 		return new String[] {
 			null, "OR", "AND", "EQ", "NEQ", "GL", "LT", "GTEQ", "LTEQ", "PLUS", "MINUS", 
 			"MULT", "DIV", "MOD", "POW", "NOT", "SCOL", "ASSIGN", "OPAR", "CPAR", 
-			"OBRACE", "CBRACE", "TRUE", "FALSE", "NIL", "IF", "ELSE", "WHILE", "TYPE", 
+			"OBRACE", "CBRACE", "TRUE", "FALSE", "NULL", "IF", "ELSE", "WHILE", "TYPE", 
 			"ID", "INT", "FLOAT", "STRING", "COMMENT", "SPACE", "OTHER"
 		};
 	}
@@ -232,9 +232,6 @@ public class IfStatementParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public TerminalNode SCOL() { return getToken(IfStatementParser.SCOL, 0); }
-		public TerminalNode INT() { return getToken(IfStatementParser.INT, 0); }
-		public TerminalNode FLOAT() { return getToken(IfStatementParser.FLOAT, 0); }
-		public TerminalNode STRING() { return getToken(IfStatementParser.STRING, 0); }
 		public AssignmentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -257,7 +254,6 @@ public class IfStatementParser extends Parser {
 	public final AssignmentContext assignment() throws RecognitionException {
 		AssignmentContext _localctx = new AssignmentContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_assignment);
-		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
@@ -266,20 +262,10 @@ public class IfStatementParser extends Parser {
 			setState(28);
 			match(ID);
 			setState(29);
-			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << FLOAT) | (1L << STRING))) != 0)) ) {
-			_errHandler.recoverInline(this);
-			}
-			else {
-				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-				_errHandler.reportMatch(this);
-				consume();
-			}
-			setState(30);
 			match(ASSIGN);
-			setState(31);
+			setState(30);
 			expr(0);
-			setState(32);
+			setState(31);
 			match(SCOL);
 			}
 		}
@@ -299,15 +285,15 @@ public class IfStatementParser extends Parser {
 		public TerminalNode IF(int i) {
 			return getToken(IfStatementParser.IF, i);
 		}
-		public List<TerminalNode> ELSE() { return getTokens(IfStatementParser.ELSE); }
-		public TerminalNode ELSE(int i) {
-			return getToken(IfStatementParser.ELSE, i);
-		}
 		public List<Condition_blockContext> condition_block() {
 			return getRuleContexts(Condition_blockContext.class);
 		}
 		public Condition_blockContext condition_block(int i) {
 			return getRuleContext(Condition_blockContext.class,i);
+		}
+		public List<TerminalNode> ELSE() { return getTokens(IfStatementParser.ELSE); }
+		public TerminalNode ELSE(int i) {
+			return getToken(IfStatementParser.ELSE, i);
 		}
 		public Stat_blockContext stat_block() {
 			return getRuleContext(Stat_blockContext.class,0);
@@ -338,8 +324,10 @@ public class IfStatementParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(34);
+			setState(33);
 			match(IF);
+			setState(34);
+			condition_block();
 			setState(40);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
@@ -647,7 +635,7 @@ public class IfStatementParser extends Parser {
 			case OPAR:
 			case TRUE:
 			case FALSE:
-			case NIL:
+			case NULL:
 			case ID:
 			case INT:
 			case FLOAT:
@@ -897,7 +885,7 @@ public class IfStatementParser extends Parser {
 		}
 	}
 	public static class NilAtomContext extends AtomContext {
-		public TerminalNode NIL() { return getToken(IfStatementParser.NIL, 0); }
+		public TerminalNode NULL() { return getToken(IfStatementParser.NULL, 0); }
 		public NilAtomContext(AtomContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -1002,12 +990,12 @@ public class IfStatementParser extends Parser {
 				match(STRING);
 				}
 				break;
-			case NIL:
+			case NULL:
 				_localctx = new NilAtomContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(105);
-				match(NIL);
+				match(NULL);
 				}
 				break;
 			default:
@@ -1055,33 +1043,33 @@ public class IfStatementParser extends Parser {
 	public static final String _serializedATN =
 		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3%o\4\2\t\2\4\3\t\3"+
 		"\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\3\2\3\2\3\2\5"+
-		"\2\30\n\2\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3\5"+
+		"\2\30\n\2\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5"+
 		"\7\5)\n\5\f\5\16\5,\13\5\3\5\3\5\5\5\60\n\5\3\6\3\6\3\6\3\7\7\7\66\n\7"+
 		"\f\7\16\79\13\7\3\b\3\b\3\b\3\b\3\b\5\b@\n\b\3\t\3\t\3\t\3\t\3\t\3\t\5"+
 		"\tH\n\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3"+
 		"\t\3\t\3\t\3\t\3\t\3\t\7\t_\n\t\f\t\16\tb\13\t\3\n\3\n\3\n\3\n\3\n\3\n"+
-		"\3\n\3\n\3\n\5\nm\n\n\3\n\2\3\20\13\2\4\6\b\n\f\16\20\22\2\t\3\2 \"\3"+
-		"\2\r\17\3\2\13\f\3\2\7\n\3\2\5\6\3\2 !\3\2\30\31\2y\2\27\3\2\2\2\4\31"+
-		"\3\2\2\2\6\35\3\2\2\2\b$\3\2\2\2\n\61\3\2\2\2\f\67\3\2\2\2\16?\3\2\2\2"+
-		"\20G\3\2\2\2\22l\3\2\2\2\24\30\5\b\5\2\25\30\5\6\4\2\26\30\5\4\3\2\27"+
-		"\24\3\2\2\2\27\25\3\2\2\2\27\26\3\2\2\2\30\3\3\2\2\2\31\32\7\35\2\2\32"+
-		"\33\5\20\t\2\33\34\5\16\b\2\34\5\3\2\2\2\35\36\7\36\2\2\36\37\7\37\2\2"+
-		"\37 \t\2\2\2 !\7\23\2\2!\"\5\20\t\2\"#\7\22\2\2#\7\3\2\2\2$*\7\33\2\2"+
-		"%&\7\34\2\2&\'\7\33\2\2\')\5\n\6\2(%\3\2\2\2),\3\2\2\2*(\3\2\2\2*+\3\2"+
-		"\2\2+/\3\2\2\2,*\3\2\2\2-.\7\34\2\2.\60\5\16\b\2/-\3\2\2\2/\60\3\2\2\2"+
-		"\60\t\3\2\2\2\61\62\5\20\t\2\62\63\5\16\b\2\63\13\3\2\2\2\64\66\5\2\2"+
-		"\2\65\64\3\2\2\2\669\3\2\2\2\67\65\3\2\2\2\678\3\2\2\28\r\3\2\2\29\67"+
-		"\3\2\2\2:;\7\26\2\2;<\5\f\7\2<=\7\27\2\2=@\3\2\2\2>@\5\2\2\2?:\3\2\2\2"+
-		"?>\3\2\2\2@\17\3\2\2\2AB\b\t\1\2BC\7\f\2\2CH\5\20\t\13DE\7\21\2\2EH\5"+
-		"\20\t\nFH\5\22\n\2GA\3\2\2\2GD\3\2\2\2GF\3\2\2\2H`\3\2\2\2IJ\f\f\2\2J"+
-		"K\7\20\2\2K_\5\20\t\rLM\f\t\2\2MN\t\3\2\2N_\5\20\t\nOP\f\b\2\2PQ\t\4\2"+
-		"\2Q_\5\20\t\tRS\f\7\2\2ST\t\5\2\2T_\5\20\t\bUV\f\6\2\2VW\t\6\2\2W_\5\20"+
-		"\t\7XY\f\5\2\2YZ\7\4\2\2Z_\5\20\t\6[\\\f\4\2\2\\]\7\3\2\2]_\5\20\t\5^"+
-		"I\3\2\2\2^L\3\2\2\2^O\3\2\2\2^R\3\2\2\2^U\3\2\2\2^X\3\2\2\2^[\3\2\2\2"+
-		"_b\3\2\2\2`^\3\2\2\2`a\3\2\2\2a\21\3\2\2\2b`\3\2\2\2cd\7\24\2\2de\5\20"+
-		"\t\2ef\7\25\2\2fm\3\2\2\2gm\t\7\2\2hm\t\b\2\2im\7\37\2\2jm\7\"\2\2km\7"+
-		"\32\2\2lc\3\2\2\2lg\3\2\2\2lh\3\2\2\2li\3\2\2\2lj\3\2\2\2lk\3\2\2\2m\23"+
-		"\3\2\2\2\13\27*/\67?G^`l";
+		"\3\n\3\n\3\n\5\nm\n\n\3\n\2\3\20\13\2\4\6\b\n\f\16\20\22\2\b\3\2\r\17"+
+		"\3\2\13\f\3\2\7\n\3\2\5\6\3\2 !\3\2\30\31\2y\2\27\3\2\2\2\4\31\3\2\2\2"+
+		"\6\35\3\2\2\2\b#\3\2\2\2\n\61\3\2\2\2\f\67\3\2\2\2\16?\3\2\2\2\20G\3\2"+
+		"\2\2\22l\3\2\2\2\24\30\5\b\5\2\25\30\5\6\4\2\26\30\5\4\3\2\27\24\3\2\2"+
+		"\2\27\25\3\2\2\2\27\26\3\2\2\2\30\3\3\2\2\2\31\32\7\35\2\2\32\33\5\20"+
+		"\t\2\33\34\5\16\b\2\34\5\3\2\2\2\35\36\7\36\2\2\36\37\7\37\2\2\37 \7\23"+
+		"\2\2 !\5\20\t\2!\"\7\22\2\2\"\7\3\2\2\2#$\7\33\2\2$*\5\n\6\2%&\7\34\2"+
+		"\2&\'\7\33\2\2\')\5\n\6\2(%\3\2\2\2),\3\2\2\2*(\3\2\2\2*+\3\2\2\2+/\3"+
+		"\2\2\2,*\3\2\2\2-.\7\34\2\2.\60\5\16\b\2/-\3\2\2\2/\60\3\2\2\2\60\t\3"+
+		"\2\2\2\61\62\5\20\t\2\62\63\5\16\b\2\63\13\3\2\2\2\64\66\5\2\2\2\65\64"+
+		"\3\2\2\2\669\3\2\2\2\67\65\3\2\2\2\678\3\2\2\28\r\3\2\2\29\67\3\2\2\2"+
+		":;\7\26\2\2;<\5\f\7\2<=\7\27\2\2=@\3\2\2\2>@\5\2\2\2?:\3\2\2\2?>\3\2\2"+
+		"\2@\17\3\2\2\2AB\b\t\1\2BC\7\f\2\2CH\5\20\t\13DE\7\21\2\2EH\5\20\t\nF"+
+		"H\5\22\n\2GA\3\2\2\2GD\3\2\2\2GF\3\2\2\2H`\3\2\2\2IJ\f\f\2\2JK\7\20\2"+
+		"\2K_\5\20\t\rLM\f\t\2\2MN\t\2\2\2N_\5\20\t\nOP\f\b\2\2PQ\t\3\2\2Q_\5\20"+
+		"\t\tRS\f\7\2\2ST\t\4\2\2T_\5\20\t\bUV\f\6\2\2VW\t\5\2\2W_\5\20\t\7XY\f"+
+		"\5\2\2YZ\7\4\2\2Z_\5\20\t\6[\\\f\4\2\2\\]\7\3\2\2]_\5\20\t\5^I\3\2\2\2"+
+		"^L\3\2\2\2^O\3\2\2\2^R\3\2\2\2^U\3\2\2\2^X\3\2\2\2^[\3\2\2\2_b\3\2\2\2"+
+		"`^\3\2\2\2`a\3\2\2\2a\21\3\2\2\2b`\3\2\2\2cd\7\24\2\2de\5\20\t\2ef\7\25"+
+		"\2\2fm\3\2\2\2gm\t\6\2\2hm\t\7\2\2im\7\37\2\2jm\7\"\2\2km\7\32\2\2lc\3"+
+		"\2\2\2lg\3\2\2\2lh\3\2\2\2li\3\2\2\2lj\3\2\2\2lk\3\2\2\2m\23\3\2\2\2\13"+
+		"\27*/\67?G^`l";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

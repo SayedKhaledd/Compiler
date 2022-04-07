@@ -1,4 +1,4 @@
-grammar start;
+grammar Decleration;
 start:TYPE;
 TYPE:INTEGER|DOUBLE;
 INTEGER: INTEGERTYPE  DECLERATION DIGITSEQ WS* K;
