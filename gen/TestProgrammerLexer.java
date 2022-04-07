@@ -1,4 +1,4 @@
-// Generated from G:/IdeaProjects/Compiler/src\TestProgrammer.g4 by ANTLR 4.9.2
+// Generated from G:/IdeaProjects/Compiler/src\Decleration.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -83,7 +83,7 @@ public class TestProgrammerLexer extends Lexer {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "TestProgrammer.g4"; }
+	public String getGrammarFileName() { return "Decleration.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
