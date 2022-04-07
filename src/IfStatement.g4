@@ -26,7 +26,7 @@ atom
  | (TRUE | FALSE) #booleanAtom
  | ID             #idAtom
  | STRING         #stringAtom
- | NIL            #nilAtom;
+ | NULL            #nilAtom;
 OR:'||';
 AND:'&&';
 EQ:'==';
@@ -50,7 +50,7 @@ OBRACE:'{';
 CBRACE:'}';
 TRUE:'true';
 FALSE:'false';
-NIL:'nil';
+NULL:'null';
 IF:'if';
 ELSE:'else';
 WHILE:'while';
